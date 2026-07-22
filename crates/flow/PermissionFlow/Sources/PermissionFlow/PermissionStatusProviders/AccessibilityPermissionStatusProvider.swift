@@ -7,9 +7,9 @@ public struct AccessibilityPermissionStatusProvider: PermissionStatusProviding {
     public var capability: PermissionStatusCapability { .preflightSupported }
     
     public func authorizationState() -> PermissionAuthorizationState {
-        // Check if accessibility is enabled for the current process
-        let isEnabled = AXIsProcessTrusted()
-        return isEnabled ? .granted : .notGranted
+        // AccessibilityTrust probes tccd live; bare AXIsProcessTrusted() can
+        // read stale-denied until relaunch after an in-flight grant.
+        return AccessibilityTrust.isGranted() ? .granted : .notGranted
     }
     
     public init() {}

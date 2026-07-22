@@ -217,7 +217,7 @@ private func authorizationState(
 ) -> PermissionFlowShimAuthorizationState {
     switch permission {
     case .accessibility:
-        return AXIsProcessTrusted() ? .granted : .notGranted
+        return AccessibilityTrust.isGranted() ? .granted : .notGranted
     case .inputMonitoring:
         return CGPreflightListenEventAccess() ? .granted : .notGranted
     case .screenRecording:
